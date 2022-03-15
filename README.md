@@ -2,6 +2,29 @@
 
 Stored Procedures for adding and managing object dimensions in TMS on SQL Server.
 
+## MLM_AddNewDimension
+Add a new dimension to an object including height, width, and/or depth.
+
+### Parameters
+
+- `@ObjectNumber` : The unique Object Number for the record
+- `@Element` : The Dimension Element that is being added
+- `@H` *(optional)* : The height in centimeters (cm)
+- `@W` *(optional)* : The width in centimeters (cm)
+- `@D` *(optional)* : The depth in centimeters (cm)
+- `@Login` : The login for the user
+- `@Description` *(optional)* : The Element Details description
+
+This stored procedure requires that at least one measurement is provided.
+
+### Example
+
+User John Doe can add a sheet size of 11x17 inches, using either of the following:
+
+```EXECUTE MLM_AddNewDimension 'Drawing.1', 'Sheet', 27.94, 43.18, NULL, 'john.doe'```
+```EXECUTE MLM_AddNewDimension @ObjectNumber = 'Drawing.1', @Element = 'Sheet', @H = 27.94, @W = 43.18, @Login = 'john.doe'```
+
+
 ## MLM_AddDimensionType_ByName
 Add a new dimension type (Height, Width, Depth, etc) to an existing dimension record, referencing the dimension element's name.
 
