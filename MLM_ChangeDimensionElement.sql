@@ -43,10 +43,18 @@ BEGIN
 		RETURN;
 	END
 
-	-- Get the existing Dimension Element details description
-	SELECT @DESCRIPTION_OLD = CASE WHEN [Description] = '' THEN NULL ELSE [Description] END
-	FROM DimItemElemXrefs
-	WHERE ElementID = @ELEMENTID_OLD AND ID = @OBJECTID AND TableID = 108;
+	-- Validate that the Dimension Elements is only used once in the Object
+	IF (SELECT COUNT(*) FROM DimItemElemXrefs WHERE ElementID = @ELEMENTID_OLD AND ID = @OBJECTID AND TableID = 108) = 1
+	BEGIN
+		SELECT @DESCRIPTION_OLD = CASE WHEN [Description] = '' THEN NULL ELSE [Description] END
+		FROM DimItemElemXrefs
+		WHERE ElementID = @ELEMENTID_OLD AND ID = @OBJECTID AND TableID = 108;
+	END
+	ELSE 
+	BEGIN
+		PRINT 'Error: This procedure only works when the element is only used once.';
+		RETURN;
+	END
 
 	-- Prepare changes to the Object Dimension label
 	DECLARE @FIND NVARCHAR(255); -- Current Dimension Element name and description string
