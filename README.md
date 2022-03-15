@@ -22,6 +22,7 @@ This stored procedure requires that at least one measurement is provided.
 User John Doe can add a sheet size of 11x17 inches, using either of the following:
 
 ```EXECUTE MLM_AddNewDimension 'Drawing.1', 'Sheet', 27.94, 43.18, NULL, 'john.doe'```
+
 ```EXECUTE MLM_AddNewDimension @ObjectNumber = 'Drawing.1', @Element = 'Sheet', @H = 27.94, @W = 43.18, @Login = 'john.doe'```
 
 
