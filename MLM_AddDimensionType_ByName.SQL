@@ -5,7 +5,7 @@
 -- =============================================
 -- Parameters:
 --   @ObjectNumber - The unique Object Number in TMS
---   @OldElement - The Dimension Element name that is being amended
+--   @Element - The Dimension Element name that is being amended
 --   @NewType - The Dimension Type that is being amended
 --   @Metric - The Dimension in either centimeters (cm) or kilograms (kg)
 --   @Login - The login for the user
