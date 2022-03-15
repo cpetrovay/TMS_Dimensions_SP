@@ -18,7 +18,7 @@ BEGIN
 	DECLARE @ELEMENTID INT; -- The Dimension Element primary key
 	DECLARE @DIMTYPEID INT; -- The Dimension Type primary key
 	DECLARE @DEIXID INT; -- The Object Dimension Element Xref primary key
-	DECLARE @RANK INT; -- The display order for the new dimension type
+	DECLARE @DISPLAYORDER INT; -- The display order for the new dimension type
 
 	-- Validate that @ObjectNumber is unique
 	IF (SELECT COUNT(*) FROM Objects WHERE ObjectNumber = @ObjectNumber) = 1
@@ -58,7 +58,7 @@ BEGIN
 
 	-- Validate that the Object Dimension Element Xref does not already include the Dimension Type
 	IF (SELECT COUNT(*) FROM Dimensions WHERE DimItemElemXrefID = @DEIXID AND DimensionTypeID = @DIMTYPEID) = 0
-		SELECT @RANK = MAX(Rank) + 1 FROM Dimensions WHERE DimItemElemXrefID = @DEIXID;
+		SELECT @DISPLAYORDER = MAX(Rank) + 1 FROM Dimensions WHERE DimItemElemXrefID = @DEIXID;
 	ELSE 
 	BEGIN
 		PRINT 'Error: Dimension types can only be used once in an element.';
@@ -67,7 +67,7 @@ BEGIN
 
 	-- Add the new dimension to the Object Dimension Element Xref
     INSERT INTO Dimensions (DimItemElemXrefID, DimensionTypeID, PrimaryUnitID, SecondaryUnitID, Displayed, Rank, LoginID, Dimension)
-    (SELECT @DEIXID, DimensionTypeID, PrimaryUnitID, SecondaryUnitID, 1, @RANK, @Login, @Metric
+    (SELECT @DEIXID, DimensionTypeID, PrimaryUnitID, SecondaryUnitID, 1, @DISPLAYORDER, @Login, @Metric
 	FROM DimensionTypes WHERE DimensionTypeID = @DIMTYPEID);
 
 	PRINT CONCAT(@Type,' has been added to ', @Element,' for ',@ObjectNumber);
